@@ -9,7 +9,7 @@ class MercadolivreSpider(scrapy.Spider):
     def parse(self, response):
         # Setting page limit
         current_page_selector = response.css('li.andes-pagination__button.andes-pagination__button--current a::text').get()
-        max_page_count = '10'
+        max_page_count = '20'
         
         # Setting selectors
         product_selector = 'div.ui-search-result__content'

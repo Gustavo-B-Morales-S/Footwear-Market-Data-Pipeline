@@ -1,7 +1,7 @@
 
 # Projeto de Extração e Visualização de Dados de Tênis do Mercado Livre
 
-Este projeto utiliza Python, Scrapy, SQLite3 e Streamlit para extrair dados de tênis esportivos do Mercado Livre, realizar transformações utilizando Pandas, armazenar os dados em um banco SQLite e criar uma interface de visualização de dados utilizando Streamlit.
+Este projeto utiliza Python, Scrapy, SQLite3 e Streamlit para extrair dados de tênis esportivos do Mercado Livre, realizar transformações utilizando Pandas, armazenar os dados em um banco SQLite e criar uma interface de visualização de dados enfatizando os principais KPIs utilizando Streamlit.
 
 ```mermaid
 graph TD;
@@ -37,7 +37,7 @@ graph TD;
 
 4. **Visualização de Dados com Streamlit:**
    - Cria uma interface interativa utilizando Streamlit.
-   - A interface permite visualizar estatísticas sobre os dados coletados.
+   - A interface permite visualizar os principais KPIs dos dados coletados.
 
 ## Estrutura do Projeto
 

@@ -1,3 +1,4 @@
+# Thirdy Party Libraries
 import streamlit as st
 import pandas as pd
 import sqlite3
@@ -7,10 +8,13 @@ from sqlite3 import Connection
 
 database_connection: Connection = sqlite3.connect(database='../data/quotes.db')
 
-df = pd.read_sql_query(sql='SELECT * FROM Mercado_Livre_Items',
-                       con=database_connection)
+df = pd.read_sql_query(
+    sql='SELECT * FROM Mercado_Livre_Items', 
+    con=database_connection
+    )
 
 database_connection.close()
+
 
 st.title('Pesquisa de Mercado - Tênis Esportivos no Mercado Livre')
 
@@ -42,8 +46,8 @@ col2.write(top_20_pages_brands)
 # Qual o preço médio por marca
 st.subheader('Preço médio por marca')
 col1, col2 = st.columns([4, 2])
-df_non_zero_prices = df[df['new_price'] > 0]
 
+df_non_zero_prices = df[df['new_price'] > 0]
 average_price_by_brand = df_non_zero_prices.groupby('brand')['new_price'] \
                                            .mean() \
                                            .sort_values(ascending=False)
@@ -57,6 +61,6 @@ df_non_zero_reviews = df[df['reviews_rating_number'] > 0]
 
 satisfaction_by_brand = df_non_zero_reviews.groupby('brand')['reviews_rating_number']\
                                            .mean()\
-                                           .sort_values(ascending=False)                              
+                                           .sort_values(ascending=False)
 col1.bar_chart(satisfaction_by_brand)
 col2.write(satisfaction_by_brand)

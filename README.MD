@@ -3,6 +3,24 @@
 
 Este projeto utiliza Python, Scrapy, SQLite3 e Streamlit para extrair dados de tênis esportivos do Mercado Livre, realizar transformações utilizando Pandas, armazenar os dados em um banco SQLite e criar uma interface de visualização de dados utilizando Streamlit.
 
+```mermaid
+graph TD;
+    A[Inicializar Projeto] --> B[Extrair Dados com Scrapy];
+    B --> C[Processar Dados com Pandas];
+    C --> D[Armazenar Dados no SQLite];
+    D --> E[Criar Interface com Streamlit];
+    E --> F[Executar Aplicação Streamlit];
+    F --> G[Acesso via Navegador];
+
+    style A fill:#7FB3D5,stroke:#333,stroke-width:2px;
+    style B fill:#7FB3D5,stroke:#333,stroke-width:2px;
+    style C fill:#7FB3D5,stroke:#333,stroke-width:2px;
+    style D fill:#7FB3D5,stroke:#333,stroke-width:2px;
+    style E fill:#7FB3D5,stroke:#333,stroke-width:2px;
+    style F fill:#7FB3D5,stroke:#333,stroke-width:2px;
+    style G fill:#7FB3D5,stroke:#333,stroke-width:2px;
+```
+
 ## Funcionalidades Principais
 
 1. **Extração de Dados com Scrapy:**
@@ -25,7 +43,7 @@ Este projeto utiliza Python, Scrapy, SQLite3 e Streamlit para extrair dados de t
 
 O projeto está estruturado da seguinte forma:
 
-```
+```plaintext
 |-- src/
 |   |-- scrapy.cfg
 |   |-- collect/
@@ -55,34 +73,38 @@ O projeto está estruturado da seguinte forma:
 - **data/**: Diretório onde o banco de dados SQLite é armazenado.
 - **app/**: Código para a aplicação Streamlit que visualiza os dados.
 
-## Como Executar
+## Executando o Projeto
+
+### Requisitos
+
+- Python 3.7+
 
 Para executar o projeto localmente, siga os passos abaixo:
 
-1. **Clone o repositório:**
-   ```
-   git clone https://github.com/Gustavo-B-Morales-S/ETL-C-Scrapy-E-Streamlit
-   cd ETL-C-Scrapy-E-Streamlit
+1. **Clonar o Repositório**:
+   ```bash
+   git clone <URL-do-Repositório>
+   cd <Nome-do-Repositório>
    ```
 
 2. **Instale as dependências:**
-   ```
+   ```bash
    pip install -r requirements.txt
    ```
 
 3. **Execute o Scrapy para extrair dados:**
-   ```
+   ```bash
    cd scrapy_project
    scrapy crawl ml_data_spider -o dados_tenis.json
    ```
 
 4. **Transforme e carregue os dados no SQLite:**
-   ```
+   ```bash
    python transform_load.py
    ```
 
 5. **Execute a aplicação Streamlit:**
-   ```
+   ```bash
    streamlit run ./app/app.py
    ```
 
@@ -91,4 +113,4 @@ Para executar o projeto localmente, siga os passos abaixo:
 
 ## Contribuições
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues para sugestões, melhorias ou problemas encontrados.
+Para contribuir com o projeto, por favor, faça um fork do repositório e envie um pull request com suas alterações.

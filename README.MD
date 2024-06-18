@@ -12,13 +12,13 @@ graph TD;
     E --> F[Executar Aplicação Streamlit];
     F --> G[Acesso via Navegador];
 
-    style A fill:#7FB3D5,stroke:#333,stroke-width:2px;
-    style B fill:#7FB3D5,stroke:#333,stroke-width:2px;
-    style C fill:#7FB3D5,stroke:#333,stroke-width:2px;
-    style D fill:#7FB3D5,stroke:#333,stroke-width:2px;
-    style E fill:#7FB3D5,stroke:#333,stroke-width:2px;
-    style F fill:#7FB3D5,stroke:#333,stroke-width:2px;
-    style G fill:#7FB3D5,stroke:#333,stroke-width:2px;
+    style A stroke:#333,stroke-width:2px;
+    style B stroke:#333,stroke-width:2px;
+    style C stroke:#333,stroke-width:2px;
+    style D stroke:#333,stroke-width:2px;
+    style E stroke:#333,stroke-width:2px;
+    style F stroke:#333,stroke-width:2px;
+    style G stroke:#333,stroke-width:2px;
 ```
 
 ## Funcionalidades Principais

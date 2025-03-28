@@ -1,5 +1,8 @@
-import scrapy
+# Native Libraries
 from typing import List, AnyStr
+
+# Third-Party Libraries
+import scrapy
 
 
 class MercadolivreSpider(scrapy.Spider):

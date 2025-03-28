@@ -1,66 +1,130 @@
-# Thirdy Party Libraries
-import streamlit as st
-import pandas as pd
+# Native Libraries
 import sqlite3
 
-from pandas import DataFrame
-from sqlite3 import Connection
-
-database_connection: Connection = sqlite3.connect(database='../data/quotes.db')
-
-df = pd.read_sql_query(
-    sql='SELECT * FROM Mercado_Livre_Items', 
-    con=database_connection
-    )
-
-database_connection.close()
+# Third-Party Libraries
+from pathlib import Path
+import streamlit as st
+import pandas as pd
 
 
-st.title('Pesquisa de Mercado - Tênis Esportivos no Mercado Livre')
-
-st.subheader('KPIs principais do sistema')
-col1, col2, col3 = st.columns(3)
-
-# KPI 1: Número total de itens
-total_itens = df.shape[0]
-col1.metric(label='Número Total de Itens', value=total_itens)
-
-# KPI 2: Número de marcas únicas
-unique_brands = df['brand'].nunique()
-col2.metric(label='Número de Marcas Únicas', value=unique_brands)
-
-# KPI 3: Preço médio novo (em reais)
-average_new_price = df['new_price'].mean()
-col3.metric(label='Preço Médio Novo (R$)', value=f'{average_new_price:.2f}')
+DATABASE_PATH = Path('../data/quotes.db')
+TABLE_NAME = 'Mercado_Livre_Items'
 
 
-# Quais marcas são mais encontradas até a 20ª página
-st.subheader('Marcas mais encontradas até a 20ª página')
-col1, col2 = st.columns([4, 2])
+def load_data_from_db(db_path: Path, table_name: str) -> pd.DataFrame:
+    """
+    Load data from SQLite database into a pandas DataFrame.
 
-top_20_pages_brands = df['brand'].value_counts() \
-                                 .sort_values(ascending=False)
-col1.bar_chart(top_20_pages_brands)
-col2.write(top_20_pages_brands)
+    Args:
+        db_path: Path to the SQLite database file
+        table_name: Name of the table to query
 
-# Qual o preço médio por marca
-st.subheader('Preço médio por marca')
-col1, col2 = st.columns([4, 2])
+    Returns:
+        pandas DataFrame containing the query results
+    """
+    try:
+        with sqlite3.connect(database=str(db_path)) as conn:
+            return pd.read_sql_query(
+                sql=f'SELECT * FROM {table_name}',
+                con=conn,
+            )
+    except sqlite3.Error as e:
+        st.error(f"Database error: {e}")
+        return pd.DataFrame()  # Return empty DataFrame on error
 
-df_non_zero_prices = df[df['new_price'] > 0]
-average_price_by_brand = df_non_zero_prices.groupby('brand')['new_price'] \
-                                           .mean() \
-                                           .sort_values(ascending=False)
-col1.bar_chart(average_price_by_brand)
-col2.write(average_price_by_brand)
 
-# Qual a satisfação por marca
-st.subheader('Satisfação por marca')
-col1, col2 = st.columns([4, 2])
-df_non_zero_reviews = df[df['reviews_rating_number'] > 0]
+def display_kpi_metrics(df: pd.DataFrame) -> None:
+    """
+    Display key performance indicators in a 3-column layout.
 
-satisfaction_by_brand = df_non_zero_reviews.groupby('brand')['reviews_rating_number']\
-                                           .mean()\
-                                           .sort_values(ascending=False)
-col1.bar_chart(satisfaction_by_brand)
-col2.write(satisfaction_by_brand)
+    Args:
+        df: DataFrame containing the market data
+    """
+    st.subheader('Key Performance Indicators')
+    col1, col2, col3 = st.columns(3)
+
+    # KPI 1: Total number of items
+    total_items = df.shape[0]
+    col1.metric(label='Total Items Scraped', value=total_items)
+
+    # KPI 2: Number of unique brands
+    unique_brands = df['brand'].nunique()
+    col2.metric(label='Unique Brands Found', value=unique_brands)
+
+    # KPI 3: Average new price (in BRL)
+    average_new_price = df['new_price'].mean()
+    col3.metric(label='Average Price (R$)', value=f'{average_new_price:.2f}')
+
+
+def display_brand_distribution(df: pd.DataFrame) -> None:
+    """
+    Display brand distribution visualization and data.
+
+    Args:
+        df: DataFrame containing the market data
+    """
+    st.subheader('Brand Distribution (Top 20 Pages)')
+    col1, col2 = st.columns([4, 2])
+
+    brand_counts = df['brand'].value_counts().sort_values(ascending=False)
+    col1.bar_chart(brand_counts, use_container_width=True)
+    col2.dataframe(brand_counts, height=300)
+
+
+def display_average_prices(df: pd.DataFrame) -> None:
+    """
+    Display average price by brand visualization.
+
+    Args:
+        df: DataFrame containing the market data
+    """
+    st.subheader('Average Price by Brand')
+    col1, col2 = st.columns([4, 2])
+
+    # Filter out items with zero/negative prices
+    df_prices = df[df['new_price'] > 0]
+    avg_price = df_prices.groupby('brand')['new_price'].mean().sort_values(ascending=False)
+
+    col1.bar_chart(avg_price, use_container_width=True)
+    col2.dataframe(avg_price, height=300)
+
+
+def display_customer_satisfaction(df: pd.DataFrame) -> None:
+    """
+    Display customer satisfaction ratings by brand.
+
+    Args:
+        df: DataFrame containing the market data
+    """
+    st.subheader('Customer Satisfaction by Brand')
+    col1, col2 = st.columns([4, 2])
+
+    # Filter out items without reviews
+    df_reviews = df[df['reviews_rating_number'] > 0]
+    satisfaction = df_reviews.groupby('brand')['reviews_rating_number'] \
+                            .mean() \
+                            .sort_values(ascending=False)
+
+    col1.bar_chart(satisfaction, use_container_width=True)
+    col2.dataframe(satisfaction, height=300)
+
+
+def main():
+    """Main application function."""
+    st.title('Market Research - Sports Tennis Shoes on Mercado Livre')
+
+    # Load data
+    df = load_data_from_db(DATABASE_PATH, TABLE_NAME)
+    if df.empty:
+        st.warning("No data available. Please check the database connection.")
+        return
+
+    # Display dashboard components
+    display_kpi_metrics(df)
+    display_brand_distribution(df)
+    display_average_prices(df)
+    display_customer_satisfaction(df)
+
+
+if __name__ == '__main__':
+    main()

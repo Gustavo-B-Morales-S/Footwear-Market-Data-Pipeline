@@ -1,6 +1,6 @@
 # Sports Shoes Data Extraction and Visualization Project from Mercado Livre
 
-This Python project utilizes Scrapy, SQLite3, and Streamlit to extract sports shoes data from Mercado Livre, perform data transformations with Pandas, store the data in an SQLite database, and create an interactive dashboard highlighting key KPIs using Streamlit.
+This is a simple project I made for my personal use. This Python project utilizes Scrapy, SQLite3, and Streamlit to extract sports shoes data from Mercado Livre, perform data transformations with Pandas, store the data in an SQLite database, and create an interactive dashboard highlighting key KPIs using Streamlit.
 
 ```mermaid
 graph TD;

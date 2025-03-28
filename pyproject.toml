@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "Footwear-Market-Data-Pipeline"
+version = "0.1.0"
+description = ""
+authors = ["Gustavo-B-Morales-S <protected_gustavo_borges@outlook.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pathlib = "^1.0.1"
+streamlit = "^1.44.0"
+pandas = "^2.2.3"
+scrapy = "^2.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
